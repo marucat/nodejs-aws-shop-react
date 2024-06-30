@@ -4,6 +4,12 @@ import { AvailableProduct } from "~/models/Product";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import React from "react";
 
+interface IProduct {
+  title: string;
+  description?: string;
+  price: number;
+};
+
 export function useAvailableProducts() {
   return useQuery<AvailableProduct[], AxiosError>(
     "available-products",
@@ -34,6 +40,20 @@ export function useAvailableProduct(id?: string) {
       return res.data;
     },
     { enabled: !!id }
+  );
+}
+
+export function useCreateProduct(body?: IProduct) {
+  return useQuery<AvailableProduct, AxiosError>(
+    ["create-product", body],
+    async () => {
+      const res = await axios.post<AvailableProduct>(
+        `${API_PATHS.product}/products`,
+        body
+      );
+      return res.data;
+    },
+    { enabled: body }
   );
 }
 
