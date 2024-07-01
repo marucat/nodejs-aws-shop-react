@@ -43,20 +43,6 @@ export function useAvailableProduct(id?: string) {
   );
 }
 
-export function useCreateProduct(body?: IProduct) {
-  return useQuery<AvailableProduct, AxiosError>(
-    ["create-product", body],
-    async () => {
-      const res = await axios.post<AvailableProduct>(
-        `${API_PATHS.product}/products`,
-        body
-      );
-      return res.data;
-    },
-    { enabled: body }
-  );
-}
-
 export function useRemoveProductCache() {
   const queryClient = useQueryClient();
   return React.useCallback(
@@ -68,7 +54,7 @@ export function useRemoveProductCache() {
 
 export function useUpsertAvailableProduct() {
   return useMutation((values: AvailableProduct) =>
-    axios.put<AvailableProduct>(`${API_PATHS.bff}/product`, values, {
+    axios.put<AvailableProduct>(`${API_PATHS.product}/products`, values, {
       headers: {
         Authorization: `Basic ${localStorage.getItem("authorization_token")}`,
       },
